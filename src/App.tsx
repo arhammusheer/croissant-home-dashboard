@@ -40,7 +40,7 @@ function App() {
     <Box
       h="100vh"
       w="100vw"
-      bg={useColorModeValue("gray.50", "gray.900")}
+      bg={useColorModeValue("gray.50", "black")}
       p={4}
     >
       <Grid
