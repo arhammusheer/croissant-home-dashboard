@@ -48,6 +48,7 @@ const Name = () => {
   const Greeting = () => {
     const date = new Date();
     const hour = date.getHours();
+
     if (hour < 12) {
       return "Morning";
     } else if (hour < 18) {
@@ -56,6 +57,14 @@ const Name = () => {
       return "Evening";
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      Greeting();
+    }, 1000);
+    return () => clearInterval(interval);
+  }
+  , [])
 
   return (
     <Stack direction="column" spacing={4} p={6} justify={"center"}>
