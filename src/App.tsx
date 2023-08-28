@@ -6,6 +6,7 @@ import {
   Progress,
   Spacer,
   Stack,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import "./App.css";
@@ -14,6 +15,27 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function App() {
+  const theme = useColorMode();
+
+  const checkTheme = () => {
+    const date = new Date();
+    const hour = date.getHours();
+    if (hour < 6 || hour > 18) {
+      theme.setColorMode("dark");
+    } else {
+      theme.setColorMode("light");
+    }
+  };
+
+  // Dark theme between 6pm and 6am
+  useEffect(() => {
+    checkTheme();
+    const interval = setInterval(() => {
+      checkTheme();
+    }, 1000 * 60 * 60); // every hour
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box
       h="100vh"
@@ -24,8 +46,8 @@ function App() {
       <Grid
         templateAreas={`
         "name name name name"        
-        "bus bus bus bus"
-        "time time time time"
+        "bus bus weather weather"
+        "bottom bottom bottom bottom"
         `}
         h="100%"
         gap={4}
@@ -38,7 +60,8 @@ function App() {
         <Card gridArea="bus">
           <Bus />
         </Card>
-        <Card gridArea="time"></Card>
+        <Card gridArea="weather"></Card>
+        <Card gridArea={"bottom"}></Card>
       </Grid>
     </Box>
   );
@@ -63,8 +86,7 @@ const Name = () => {
       Greeting();
     }, 1000);
     return () => clearInterval(interval);
-  }
-  , [])
+  }, []);
 
   return (
     <Stack direction="column" spacing={4} p={6} justify={"center"}>
@@ -176,9 +198,10 @@ const Bus = () => {
       spacing={4}
       p={6}
       justify={"center"}
-      bg={useColorModeValue("pink.200", "pink.600")}
+      bg={useColorModeValue("pink.200", "pink.700")}
       color={useColorModeValue("black", "white")}
       borderRadius={8}
+      h={"full"}
     >
       <Stack direction="row" spacing={4}>
         <Box>
