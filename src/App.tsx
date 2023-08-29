@@ -225,12 +225,19 @@ const DateTime = () => {
       p={8}
       justify={"center"}
       align={"end"}
+      textAlign="right"
     >
-      <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
+      <Heading
+        size="lg"
+        fontFamily={"'Work Sans', sans-serif"}
+        textAlign="right"
+      >
         Today is {days[day]}, {date.toLocaleDateString()}
       </Heading>
 
-      <Heading size="3xl">{date.toLocaleTimeString()}</Heading>
+      <Heading size="3xl" textAlign="right">
+        {date.toLocaleTimeString()}
+      </Heading>
     </Stack>
   );
 };
