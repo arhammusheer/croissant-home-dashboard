@@ -175,8 +175,10 @@ const Name = () => {
       return "Morning";
     } else if (hour < 18) {
       return "Afternoon";
-    } else {
+    } else if (hour < 22) {
       return "Evening";
+    } else {
+      return "Night";
     }
   };
 
