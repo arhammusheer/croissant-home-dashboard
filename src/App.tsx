@@ -133,26 +133,36 @@ const Weather = () => {
   }, []);
 
   return (
-    <Stack
-      direction="column"
-      spacing={4}
-      p={6}
-      justify={"center"}
+    <Box
       bg={useColorModeValue("blue.200", "blue.700")}
       color={useColorModeValue("black", "white")}
       borderRadius={8}
-      h={"full"}
       bgImage={`/weathercode/${weathercode}.jpg`}
       bgSize="cover"
+      h={"full"}
       // Dark backdrop for light text
       backdropBrightness={useColorModeValue(0.5, 0.2)}
     >
-      <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
-        Weather
-      </Heading>
-      <Heading size="4xl">{weather?.current_weather.temperature}°C</Heading>
-      <Heading size="md">{getWeatherStatusFromCode(weathercode)}</Heading>
-    </Stack>
+      <Stack
+        direction="column"
+        spacing={4}
+        justify={"center"}
+        h={"full"}
+        bgGradient={"linear(to-r, rgba(0,0,0,0.75), rgba(0,0,0,0))"}
+        p={6}
+      >
+        <Heading
+          size="lg"
+          fontFamily={"'Work Sans', sans-serif"}
+          outline={1}
+          outlineColor={"black"}
+        >
+          Weather
+        </Heading>
+        <Heading size="4xl">{weather?.current_weather.temperature}°C</Heading>
+        <Heading size="md">{getWeatherStatusFromCode(weathercode)}</Heading>
+      </Stack>
+    </Box>
   );
 };
 
