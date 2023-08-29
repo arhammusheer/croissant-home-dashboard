@@ -3,7 +3,7 @@ import {
   Stack,
   Text,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -81,6 +81,92 @@ export default function News() {
           );
         })}
       </Marquee>
+      <CurrencyRates />
     </Stack>
   );
 }
+
+const CurrencyRates = () => {
+  const [rates, setRates] = useState<{
+    success: boolean;
+    date: string;
+    rates: { [key: string]: number };
+  }>({
+    success: false,
+    date: "",
+    rates: {},
+  });
+
+  const getRates = async () => {
+    await axios
+      .get(`https://api.exchangerate.host/latest?base=INR`)
+      .then((res) => {
+        setRates(res.data);
+      });
+  };
+
+  useEffect(() => {
+    // Every 30 mins
+    getRates();
+    const interval = setInterval(() => {
+      getRates();
+    }, 60 * 1000 * 30);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Stack
+      w={"full"}
+      direction={"row"}
+      spacing={2}
+      align={"center"}
+      justify={"space-evenly"}
+    >
+      <Text fontSize="sm" fontWeight="bold" color="gray.500">
+        {rates.date}
+      </Text>
+      <CurrencyRateSingle
+        currency="USD"
+        rate={1 / rates.rates.USD}
+        emoji="🇺🇸"
+      />
+      <CurrencyRateSingle
+        currency="CAD"
+        rate={1 / rates.rates.CAD}
+        emoji="🇨🇦"
+      />
+      <CurrencyRateSingle
+        currency="EUR"
+        rate={1 / rates.rates.EUR}
+        emoji="🇪🇺"
+      />
+      <CurrencyRateSingle
+        currency="GBP"
+        rate={1 / rates.rates.GBP}
+        emoji="🇬🇧"
+      />
+    </Stack>
+  );
+};
+
+const CurrencyRateSingle = ({
+  currency,
+  rate,
+  emoji,
+}: {
+  currency: string;
+  rate: number;
+  emoji: string;
+}) => {
+  return (
+    <Stack direction={"column"} align={"center"} justify={"center"} gap={0}>
+      <Text fontSize="lg" fontWeight="bold">
+        {rate.toFixed(3)}
+      </Text>
+      <Text fontSize="sm" fontWeight="bold" color="gray.500">
+        {emoji} {currency}
+      </Text>
+    </Stack>
+  );
+};
