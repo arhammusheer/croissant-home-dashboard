@@ -53,10 +53,10 @@ function App() {
           <Spacer />
           <DateTime />
         </Stack>
-        <Card gridArea="bus" h={"50vh"}>
+        <Card gridArea="bus" h={"50vh"} rounded={"2xl"}>
           <Bus />
         </Card>
-        <Card gridArea="weather">
+        <Card gridArea="weather" rounded={"2xl"}>
           <Weather />
         </Card>
         <Box gridArea={"bottom"} minH={"20vh"}>
@@ -138,18 +138,17 @@ const Weather = () => {
   const bgGradient = useColorModeValue(
     "linear(to-r, rgba(255,255,255,0.75), rgba(0,0,0,0))",
     "linear(to-r, rgba(0,0,0,0.75), rgba(0,0,0,0))"
-  )
+  );
 
   return (
     <Box
       bg={useColorModeValue("blue.200", "blue.700")}
       color={useColorModeValue("black", "white")}
-      borderRadius={8}
       bgImage={`/weathercode/${weathercode}.jpg`}
       bgSize="cover"
       h={"full"}
-      // Dark backdrop for light text
       backdropBrightness={useColorModeValue(0.5, 0.2)}
+      rounded={"2xl"}
     >
       <Stack
         direction="column"
@@ -311,55 +310,51 @@ const Bus = () => {
   return (
     <Stack
       direction="column"
-      spacing={4}
       p={6}
-      justify={"center"}
+      justify={"space-between"}
       bg={useColorModeValue("pink.200", "pink.700")}
       color={useColorModeValue("black", "white")}
-      borderRadius={8}
+      rounded={"2xl"}
       h={"full"}
     >
-      <Stack direction="row" spacing={4}>
-        <Box>
-          <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
-            Bus Departs In
-          </Heading>
-          <Heading size="3xl">
-            {Math.floor(busTime / 60) > 0 &&
-              Math.floor(busTime / 60) + " Hours "}
-            {busTime % 60} minutes
-          </Heading>
+      <Box textAlign="right">
+        <Heading size="sm" fontFamily={"'Work Sans', sans-serif"}>
+          Next Bus Departs In
+        </Heading>
+        <Heading size="xl" fontFamily={"'Work Sans', sans-serif"}>
+          {busTimeNext > -1
+            ? (Math.floor(busTimeNext / 60) > 0
+                ? Math.floor(busTimeNext / 60) + " Hours "
+                : "") +
+              (busTimeNext % 60) +
+              " Minutes"
+            : "No more buses today"}
+        </Heading>
+        <Heading size="sm">
+          {bus?.route_departures[0].itineraries[0].headsign}
+        </Heading>
+      </Box>
+      <Box>
+        <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
+          Bus Departs In
+        </Heading>
+        <Heading size="4xl">
+          {Math.floor(busTime / 60) > 0 && Math.floor(busTime / 60) + " Hours "}
+          {busTime % 60} minutes
+        </Heading>
 
-          <Heading size="sm">
-            {bus?.route_departures[0].itineraries[0].headsign}
-          </Heading>
-        </Box>
-        <Spacer />
-        <Box textAlign="right">
-          <Heading size="sm" fontFamily={"'Work Sans', sans-serif"}>
-            Next Bus Departs In
-          </Heading>
-          <Heading size="xl">
-            {busTimeNext > -1
-              ? (Math.floor(busTimeNext / 60) > 0
-                  ? Math.floor(busTimeNext / 60) + " Hours "
-                  : "") +
-                (busTimeNext % 60) +
-                " Minutes"
-              : "No more buses today"}
-          </Heading>
-          <Heading size="sm">
-            {bus?.route_departures[0].itineraries[0].headsign}
-          </Heading>
-        </Box>
-      </Stack>
+        <Heading size="sm">
+          {bus?.route_departures[0].itineraries[0].headsign}
+        </Heading>
+      </Box>
+
       <Progress
         value={30 - busTime}
         max={30}
         colorScheme="pink"
         size="lg"
-        borderRadius={8}
-      />
+        rounded={"2xl"}
+        />
     </Stack>
   );
 };

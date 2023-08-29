@@ -43,7 +43,7 @@ export default function News() {
     <Stack
       maxW={"97vw"}
       w={"100%"}
-      borderRadius={"md"}
+      rounded={"2xl"}
       overflow={"hidden"}
       align="end"
       h="full"
@@ -65,7 +65,7 @@ export default function News() {
               px={2}
               py={1}
               mr={2}
-              rounded="md"
+              rounded="2xl"
               minW={"300px"}
               maxW={"500px"}
               h={"full"}
