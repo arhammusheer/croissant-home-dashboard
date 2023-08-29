@@ -13,6 +13,7 @@ import "./App.css";
 import "@fontsource/work-sans";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import News from "./components/News";
 
 function App() {
   const theme = useColorMode();
@@ -40,25 +41,27 @@ function App() {
     <Box h="100vh" w="100vw" bg={useColorModeValue("gray.50", "black")} p={4}>
       <Grid
         templateAreas={`
-        "name name name name"        
+        "name name name name"     
         "bus bus weather weather"
         "bottom bottom bottom bottom"
         `}
         h="100%"
         gap={4}
       >
-        <Stack direction={"row"} gridArea="name">
+        <Stack direction={"row"} gridArea="name" h={"20vh"} spacing={4}>
           <Name />
           <Spacer />
           <DateTime />
         </Stack>
-        <Card gridArea="bus">
+        <Card gridArea="bus" h={"50vh"}>
           <Bus />
         </Card>
         <Card gridArea="weather">
           <Weather />
         </Card>
-        <Card gridArea={"bottom"}></Card>
+        <Box gridArea={"bottom"} minH={"20vh"}>
+          <News />
+        </Box>
       </Grid>
     </Box>
   );
@@ -132,6 +135,11 @@ const Weather = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const bgGradient = useColorModeValue(
+    "linear(to-r, rgba(255,255,255,0.75), rgba(0,0,0,0))",
+    "linear(to-r, rgba(0,0,0,0.75), rgba(0,0,0,0))"
+  )
+
   return (
     <Box
       bg={useColorModeValue("blue.200", "blue.700")}
@@ -148,7 +156,7 @@ const Weather = () => {
         spacing={4}
         justify={"center"}
         h={"full"}
-        bgGradient={"linear(to-r, rgba(0,0,0,0.75), rgba(0,0,0,0))"}
+        bgGradient={bgGradient}
         p={6}
       >
         <Heading
