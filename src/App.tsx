@@ -33,7 +33,7 @@ function App() {
     checkTheme();
     const interval = setInterval(() => {
       checkTheme();
-    }, 1000 * 60 * 60); // every hour
+    }, 1000 * 60); // every minute
     return () => clearInterval(interval);
   }, []);
 
