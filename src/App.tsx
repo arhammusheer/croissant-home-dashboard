@@ -21,7 +21,8 @@ function App() {
   const checkTheme = () => {
     const date = new Date();
     const hour = date.getHours();
-    if (hour < 7 || hour > 18) {
+    const ampm = hour >= 12 ? "pm" : "am";
+    if (hour < 7 || hour >= 18) {
       theme.setColorMode("dark");
     } else {
       theme.setColorMode("light");
