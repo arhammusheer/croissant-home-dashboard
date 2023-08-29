@@ -132,17 +132,6 @@ const Weather = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    // Cycle weather code every 10 seconds
-    const codes = Object.keys(WMO);
-    let i = 0;
-    const interval = setInterval(() => {
-      setWeathercode(parseInt(codes[i]));
-      i = (i + 1) % codes.length;
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <Stack
       direction="column"
