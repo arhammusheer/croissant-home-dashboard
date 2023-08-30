@@ -49,22 +49,22 @@ function App() {
         h="100%"
         gap={4}
       >
-        <Stack direction={"row"} gridArea="name" h={"20vh"} spacing={4}>
+        <Stack direction={"row"} gridArea="name" spacing={4}>
           <Greeting name="Arham" />
           <Spacer />
           <DateTime />
         </Stack>
-        <Card gridArea="bus" h={"50vh"} rounded={"2xl"}>
+        <Card gridArea="bus" rounded={"2xl"}>
           <Bus />
         </Card>
-        <Stack direction={"column"} gridArea="bus2" h={"50vh"} rounded={"2xl"} gap={4}>
+        <Stack direction={"column"} gridArea="bus2" rounded={"2xl"} gap={4}>
           <Card h={"full"} rounded={"2xl"}></Card>
           <Card h={"full"} rounded={"2xl"}></Card>
         </Stack>
         <Card gridArea="weather" rounded={"2xl"}>
           <Weather />
         </Card>
-        <Box gridArea={"bottom"} minH={"20vh"}>
+        <Box gridArea={"bottom"}>
           <News />
         </Box>
       </Grid>
