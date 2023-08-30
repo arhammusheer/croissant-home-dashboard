@@ -43,7 +43,7 @@ function App() {
       <Grid
         templateAreas={`
         "name name name name"     
-        "bus bus weather weather"
+        "bus bus bus2 weather"
         "bottom bottom bottom bottom"
         `}
         h="100%"
@@ -57,6 +57,10 @@ function App() {
         <Card gridArea="bus" h={"50vh"} rounded={"2xl"}>
           <Bus />
         </Card>
+        <Stack direction={"column"} gridArea="bus2" h={"50vh"} rounded={"2xl"} gap={4}>
+          <Card h={"full"} rounded={"2xl"}></Card>
+          <Card h={"full"} rounded={"2xl"}></Card>
+        </Stack>
         <Card gridArea="weather" rounded={"2xl"}>
           <Weather />
         </Card>

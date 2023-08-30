@@ -1,12 +1,4 @@
-import {
-  Card,
-  Divider,
-  Stack,
-  StackDivider,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Stack, Text, useColorMode } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
@@ -19,8 +11,6 @@ export default function News() {
       tickers: string[];
     }[]
   >([]);
-
-  const news_bg = useColorModeValue("gray.50", "gray.900");
 
   const getNews = async () => {
     await axios
