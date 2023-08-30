@@ -1,4 +1,5 @@
 import { Heading, Stack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 export default function Greeting({ name }: { name: string }) {
   const TimeOfDay = () => {
@@ -20,12 +21,22 @@ export default function Greeting({ name }: { name: string }) {
     }
   };
 
+  const [greet, setGreet] = useState(TimeOfDay());
+
+  // Change the greeting based on the time of day
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGreet(TimeOfDay());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Stack direction="column" spacing={4} p={6} justify={"center"}>
       <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
         Hey There {name}!
       </Heading>
-      <Heading size="3xl">Good {TimeOfDay()}</Heading>
+      <Heading size="3xl">Good {greet}!</Heading>
     </Stack>
   );
 }
