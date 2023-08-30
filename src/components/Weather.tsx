@@ -1,4 +1,11 @@
-import { Box, Heading, Stack, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Spacer,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useGetWeatherQuery } from "../redux/slices/weather.api";
 
@@ -49,10 +56,13 @@ const Weather = () => {
     return WMO[weathercode] || "Unknown";
   };
 
-  const { data, error, isLoading, refetch } = useGetWeatherQuery({
-    lat: 42.3477,
-    lon: -72.5292,
-  });
+  const { data, error, isLoading, refetch, fulfilledTimeStamp } =
+    useGetWeatherQuery({
+      lat: 42.3477,
+      lon: -72.5292,
+    });
+
+  const REFRESH_MS = 1000 * 60 * 5; // 5 minutes
 
   const [weathercode, setWeathercode] = useState(0);
 
@@ -65,9 +75,9 @@ const Weather = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 1000 * 60 * 5); // 5 minutes
+    }, REFRESH_MS);
     return () => clearInterval(interval);
-  }, [refetch]);
+  }, [REFRESH_MS, refetch]);
 
   const bgGradient = useColorModeValue(
     "linear(to-r, rgba(255,255,255,0.75), rgba(0,0,0,0))",
@@ -100,6 +110,7 @@ const Weather = () => {
         >
           Weather
         </Heading>
+        <Spacer />
         {isLoading && <Heading size="md">Loading...</Heading>}
         {error && <Heading size="md">Error</Heading>}
         {data && (
@@ -107,6 +118,21 @@ const Weather = () => {
             <Heading size="4xl">{data.current_weather.temperature}°</Heading>
             <Heading size="md">{getWeatherStatusFromCode(weathercode)}</Heading>
           </>
+        )}
+        <Spacer />
+        {fulfilledTimeStamp && (
+          <Text
+            size="sm"
+            textAlign="right"
+            fontFamily={"'Work Sans', sans-serif"}
+            color={"gray.500"}
+          >
+            Next update in{" "}
+            {Math.round(
+              (fulfilledTimeStamp + REFRESH_MS - Date.now()) / 1000 / 60
+            )}{" "}
+            minutes
+          </Text>
         )}
       </Stack>
     </Box>
