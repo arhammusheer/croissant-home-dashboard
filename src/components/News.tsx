@@ -1,6 +1,8 @@
 import {
   Card,
+  Divider,
   Stack,
+  StackDivider,
   Text,
   useColorMode,
   useColorModeValue,
@@ -42,9 +44,7 @@ export default function News() {
   return (
     <Stack
       maxW={"97vw"}
-      w={"100%"}
       rounded={"2xl"}
-      overflow={"hidden"}
       align="end"
       h="full"
       onClick={toggleColorMode}
@@ -60,24 +60,24 @@ export default function News() {
       >
         {news.map((n, i) => {
           return (
-            <Card
-              key={i}
-              px={2}
-              py={1}
-              mr={2}
-              rounded="2xl"
-              minW={"300px"}
-              maxW={"500px"}
-              h={"full"}
-              bg={news_bg}
-            >
-              <Text fontSize="sm" fontWeight="bold" color="gray.500">
-                {n.tickers.join(", ")}
-              </Text>
-              <Text fontSize="md" fontWeight="bold">
-                {n.title}
-              </Text>
-            </Card>
+            <>
+              <Stack
+                key={i}
+                p={2}
+                mr={2}
+                rounded="2xl"
+                maxW={"400px"}
+                h={"full"}
+                borderWidth={1}
+              >
+                <Text fontSize="sm" fontWeight="bold" color="gray.500">
+                  {n.tickers.join(", ")}
+                </Text>
+                <Text fontSize="md" fontWeight="bold">
+                  {n.title}
+                </Text>
+              </Stack>
+            </>
           );
         })}
       </Marquee>

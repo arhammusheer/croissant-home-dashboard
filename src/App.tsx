@@ -9,7 +9,6 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import "./App.css";
 import "@fontsource/work-sans";
 import axios from "axios";
 import { useEffect, useState } from "react";

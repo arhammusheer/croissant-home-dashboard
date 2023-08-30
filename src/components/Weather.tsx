@@ -1,6 +1,6 @@
 import { Box, Heading, Stack, useColorModeValue } from "@chakra-ui/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { useGetWeatherQuery } from "../redux/slices/weather.api";
 
 const Weather = () => {
   const WMO = {
@@ -44,31 +44,30 @@ const Weather = () => {
 
     99: "Unknown precipitation",
   } as { [key: number]: string };
+
   const getWeatherStatusFromCode = (weathercode: number) => {
     return WMO[weathercode] || "Unknown";
   };
 
-  const [weather, setWeather] = useState<typeof EXAMPLE_WEATHER | null>(null);
+  const { data, error, isLoading, refetch } = useGetWeatherQuery({
+    lat: 42.3477,
+    lon: -72.5292,
+  });
+
   const [weathercode, setWeathercode] = useState(0);
 
-  const getWeather = () => {
-    axios
-      .get(
-        "https://api.open-meteo.com/v1/forecast?latitude=42.3477&longitude=-72.5292&current_weather=true&timezone=auto"
-      )
-      .then((res) => {
-        setWeather(res.data);
-        setWeathercode(res.data.current_weather.weathercode);
-      });
-  };
+  useEffect(() => {
+    if (data) {
+      setWeathercode(data.current_weather.weathercode);
+    }
+  }, [data]);
 
   useEffect(() => {
-    getWeather();
     const interval = setInterval(() => {
-      getWeather();
-    }, 1000 * 60 * 10); // every 10 minutes
+      refetch();
+    }, 1000 * 60 * 5); // 5 minutes
     return () => clearInterval(interval);
-  }, []);
+  }, [refetch]);
 
   const bgGradient = useColorModeValue(
     "linear(to-r, rgba(255,255,255,0.75), rgba(0,0,0,0))",
@@ -101,29 +100,17 @@ const Weather = () => {
         >
           Weather
         </Heading>
-        <Heading size="4xl">{weather?.current_weather.temperature}°C</Heading>
-        <Heading size="md">{getWeatherStatusFromCode(weathercode)}</Heading>
+        {isLoading && <Heading size="md">Loading...</Heading>}
+        {error && <Heading size="md">Error</Heading>}
+        {data && (
+          <>
+            <Heading size="4xl">{data.current_weather.temperature}°</Heading>
+            <Heading size="md">{getWeatherStatusFromCode(weathercode)}</Heading>
+          </>
+        )}
       </Stack>
     </Box>
   );
 };
 
 export default Weather;
-
-const EXAMPLE_WEATHER = {
-  latitude: 42.343937,
-  longitude: -72.54776,
-  generationtime_ms: 1.1609792709350586,
-  utc_offset_seconds: -14400,
-  timezone: "America/New_York",
-  timezone_abbreviation: "EDT",
-  elevation: 51.0,
-  current_weather: {
-    temperature: 23.5,
-    windspeed: 13.0,
-    winddirection: 161,
-    weathercode: 3,
-    is_day: 1,
-    time: "2023-08-28T19:00",
-  },
-};
