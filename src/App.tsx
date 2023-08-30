@@ -15,6 +15,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import News from "./components/News";
 import Weather from "./components/Weather";
+import Greeting from "./components/Greeting";
 
 function App() {
   const theme = useColorMode();
@@ -50,7 +51,7 @@ function App() {
         gap={4}
       >
         <Stack direction={"row"} gridArea="name" h={"20vh"} spacing={4}>
-          <Name />
+          <Greeting name="Arham" />
           <Spacer />
           <DateTime />
         </Stack>
@@ -67,41 +68,6 @@ function App() {
     </Box>
   );
 }
-
-
-
-const Name = () => {
-  const Greeting = () => {
-    const date = new Date();
-    const hour = date.getHours();
-
-    if (hour < 12) {
-      return "Morning";
-    } else if (hour < 18) {
-      return "Afternoon";
-    } else if (hour < 22) {
-      return "Evening";
-    } else {
-      return "Night";
-    }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      Greeting();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Stack direction="column" spacing={4} p={6} justify={"center"}>
-      <Heading size="lg" fontFamily={"'Work Sans', sans-serif"}>
-        Hey There Arham
-      </Heading>
-      <Heading size="3xl">Good {Greeting()}</Heading>
-    </Stack>
-  );
-};
 
 const DateTime = () => {
   const [date, setDate] = useState(new Date());
@@ -251,7 +217,7 @@ const Bus = () => {
         colorScheme="pink"
         size="lg"
         rounded={"2xl"}
-        />
+      />
     </Stack>
   );
 };
