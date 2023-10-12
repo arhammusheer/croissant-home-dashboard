@@ -116,11 +116,11 @@ const CurrencyRates = () => {
       <Text fontSize="sm" fontWeight="bold" color="gray.500">
         {rates.date}
       </Text>
-      <CurrencyRateSingle
+      {/* <CurrencyRateSingle
         currency="USD"
         rate={1 / rates.rates.USD}
         emoji="🇺🇸"
-      />
+      /> */}
       <CurrencyRateSingle
         currency="CAD"
         rate={1 / rates.rates.CAD}
