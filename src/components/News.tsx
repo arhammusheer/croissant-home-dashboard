@@ -140,23 +140,23 @@ const CurrencyRates = () => {
   );
 };
 
-const CurrencyRateSingle = ({
-  currency,
-  rate,
-  emoji,
-}: {
-  currency: string;
-  rate: number;
-  emoji: string;
-}) => {
-  return (
-    <Stack direction={"column"} align={"center"} justify={"center"} gap={0}>
-      <Text fontSize="lg" fontWeight="bold">
-        {rate.toFixed(3)}
-      </Text>
-      <Text fontSize="sm" fontWeight="bold" color="gray.500">
-        {emoji} {currency}
-      </Text>
-    </Stack>
-  );
-};
+// const CurrencyRateSingle = ({
+//   currency,
+//   rate,
+//   emoji,
+// }: {
+//   currency: string;
+//   rate: number;
+//   emoji: string;
+// }) => {
+//   return (
+//     <Stack direction={"column"} align={"center"} justify={"center"} gap={0}>
+//       <Text fontSize="lg" fontWeight="bold">
+//         {rate.toFixed(3)}
+//       </Text>
+//       <Text fontSize="sm" fontWeight="bold" color="gray.500">
+//         {emoji} {currency}
+//       </Text>
+//     </Stack>
+//   );
+// };
