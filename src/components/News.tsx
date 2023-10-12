@@ -121,7 +121,7 @@ const CurrencyRates = () => {
         rate={1 / rates.rates.USD}
         emoji="🇺🇸"
       /> */}
-      <CurrencyRateSingle
+      {/* <CurrencyRateSingle
         currency="CAD"
         rate={1 / rates.rates.CAD}
         emoji="🇨🇦"
@@ -135,7 +135,7 @@ const CurrencyRates = () => {
         currency="GBP"
         rate={1 / rates.rates.GBP}
         emoji="🇬🇧"
-      />
+      /> */}
     </Stack>
   );
 };
