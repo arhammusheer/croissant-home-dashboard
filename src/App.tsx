@@ -1,13 +1,13 @@
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { FullPageLoader } from "./components/brand/Loader";
 import Dashboard from "./pages/Dashboard";
 import Landing from "./pages/unauthenticated/Landing";
-import { FullPageLoader, Loader } from "./components/brand/Loader";
 
 export default function App() {
   const { isAuthenticated, isLoading } = useKindeAuth();
 
-  if (true) {
-    return <FullPageLoader />
+  if (isLoading) {
+    return <FullPageLoader />;
   }
 
   if (!isAuthenticated) {
