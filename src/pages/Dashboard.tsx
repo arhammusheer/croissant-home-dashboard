@@ -1,9 +1,9 @@
+import { Box } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar, { NavbarItem } from "../components/nagivation/Navbar";
-import MyDevices from "./MyDevices";
-import MyAccount from "./MyAccount";
-import { Box } from "@chakra-ui/react";
 import Homepage from "./Homepage";
+import MyAccount from "./MyAccount";
+import MyDevices from "./MyDevices";
 
 const navitems: Array<NavbarItem> = [
   {

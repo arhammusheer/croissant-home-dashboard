@@ -33,7 +33,7 @@ export function FullPageLoader() {
     >
       <Loader />
       <Text
-        as={motion.text}
+        as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: appearAfter, duration: 2 } }}
         mt={4}

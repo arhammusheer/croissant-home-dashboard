@@ -5,14 +5,16 @@ import {
   Tooltip,
   useBreakpointValue,
   useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef } from "react";
-import Logo from "../brand/Logo";
-import Greeting from "../brand/Greeting";
-import Homepage from "../../pages/Homepage";
 import { useNavigate } from "react-router-dom";
+import Homepage from "../../pages/Homepage";
 import Logout from "../authentication/Logout";
+import Greeting from "../brand/Greeting";
+import Logo from "../brand/Logo";
+import MenuToggle from "./AnimatedHamburger";
 
 export interface NavbarItem {
   name: string; // The name of the item
@@ -25,26 +27,33 @@ export interface NavbarItem {
 }
 
 export default function Navbar({ navitems }: { navitems: Array<NavbarItem> }) {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, sm: false });
+  const isTablet = useBreakpointValue({ base: true, lg: false });
   ``;
   return (
     <nav>
       {isMobile ? (
         <MobileNav navitems={navitems} />
       ) : (
-        <DesktopNav navitems={navitems} />
+        <DesktopNav navitems={navitems} showGreeting={!isTablet} />
       )}
     </nav>
   );
 }
 
-const DesktopNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
+const DesktopNav = ({
+  navitems,
+  showGreeting = true,
+}: {
+  navitems: Array<NavbarItem>;
+  showGreeting?: boolean;
+}) => {
   return (
     <Stack direction={"row"} spacing={4} align={"center"} p={8} as={"ul"}>
       <NavItem name="Home" path="/" size="lg" element={<Homepage />}>
         <Logo />
       </NavItem>
-      <Greeting />
+      {showGreeting && <Greeting />}
       <Spacer />
       {navitems.map((item) => (
         <NavItem key={item.name} {...item} />
@@ -54,12 +63,33 @@ const DesktopNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
   );
 };
 
+
 const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
+  const { isOpen, onToggle } = useDisclosure();
   return (
-    <Stack direction={"column"} spacing={4}>
-      {navitems.map((item) => (
-        <NavItem key={item.name} {...item} />
-      ))}
+    <Stack
+      direction={"row"}
+      spacing={4}
+      align={"center"}
+      justify={"space-between"}
+      p={8}
+      as={"ul"}
+    >
+      <Logo />
+     <MenuToggle toggle={onToggle} isOpen={isOpen} theme={useColorModeValue("dark", "light")} />
+      <Box
+        display={{ base: "none", md: "flex" }}
+        alignItems={"center"}
+        as={"ul"}
+      >
+        {navitems.map((item) => (
+          <NavItem key={item.name} {...item} />
+        ))}
+        <Logout />
+      </Box>
+      <Box display={{ base: "none", md: "flex" }}>
+        <Greeting />
+      </Box>
     </Stack>
   );
 };
