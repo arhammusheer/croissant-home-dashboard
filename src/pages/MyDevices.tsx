@@ -1,17 +1,18 @@
 import {
-	Box,
-	Button,
-	ButtonGroup,
-	Card,
-	CardBody,
-	CardHeader,
-	Grid,
-	Heading,
-	Icon,
-	Spacer,
-	Stack,
-	Text,
-	useColorModeValue
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardHeader,
+  Grid,
+  Heading,
+  Icon,
+  Image,
+  Spacer,
+  Stack,
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { BiServer } from "react-icons/bi";
 import { FaLaptop } from "react-icons/fa";
@@ -40,7 +41,7 @@ const exampleDevices: Array<Device> = [
     name: "My Desktop",
     id: "123456789",
     type: "desktop",
-    status: "online",
+    status: "unknown",
     lastSeen: "2021-10-13T19:00:00Z",
   },
   {
@@ -71,6 +72,7 @@ export default function MyDevices() {
         {exampleDevices.map((device) => (
           <DeviceCard device={device} key={device.id} />
         ))}
+        <OrderYourOwnCard />
       </Grid>
     </Box>
   );
@@ -153,5 +155,33 @@ const DeviceTypeIcon = ({
     >
       <Text>{Capitalize(type)}</Text> <Icon as={icons[type]} />
     </Stack>
+  );
+};
+
+const OrderYourOwnCard = () => {
+  return (
+    <Card
+      bg={useColorModeValue("white", "black")}
+      borderRadius="lg"
+      border="1px"
+      borderColor={useColorModeValue("gray.200", "gray.700")}
+      bgGradient={"radial(orange.900, transparent)"}
+    >
+      <CardHeader>
+        <Heading as="h3" size="md">
+          Order Your CIOT Device
+        </Heading>
+      </CardHeader>
+      <CardBody>
+        <Image src="/iot-board.png" dropShadow={"md"} />
+        <Text size="sm">
+          You can order your own device from our store. We will automatically
+          register it for you.
+        </Text>
+        <Button w={"full"} colorScheme="orange" mt={4}>
+          Order Now
+        </Button>
+      </CardBody>
+    </Card>
   );
 };
