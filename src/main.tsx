@@ -28,6 +28,7 @@ const kindeConfig = {
   domain: "https://croissant.kinde.com",
   redirectUri: window.location.origin,
   logoutUri: window.location.origin,
+  isDangerouslyUseLocalStorage: !import.meta.env.PROD,
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       domain={kindeConfig.domain}
       redirectUri={kindeConfig.redirectUri}
       logoutUri={kindeConfig.logoutUri}
+      isDangerouslyUseLocalStorage={kindeConfig.isDangerouslyUseLocalStorage}
     >
       <ReduxProvider store={store}>
         <ChakraProvider theme={theme}>
