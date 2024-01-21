@@ -87,6 +87,7 @@ const DeviceCard = ({ device }: { device: Device }) => {
       borderRadius="lg"
       border="1px"
       borderColor={useColorModeValue("gray.200", "gray.700")}
+      shadow={"none"}
     >
       <CardHeader>
         <Heading as="h3" size="md">
@@ -120,13 +121,7 @@ const StatusIndicator = ({ status }: { status: Device["status"] }) => {
 
   return (
     <Stack direction={"row"} align={"center"} spacing={2}>
-      <Box
-        w={4}
-        h={4}
-        borderRadius={"full"}
-        bg={colors[status]}
-        boxShadow={"md"}
-      />
+      <Box w={4} h={4} borderRadius={"full"} bg={colors[status]} />
       <Text>{Capitalize(status)}</Text>
     </Stack>
   );
@@ -159,13 +154,19 @@ const DeviceTypeIcon = ({
 };
 
 const OrderYourOwnCard = () => {
+  const themedGradient = useColorModeValue(
+    "linear(to-t, orange.200,transparent)",
+    "linear(to-t,transparent,#422200)"
+  );
+
   return (
     <Card
       bg={useColorModeValue("white", "black")}
       borderRadius="lg"
       border="1px"
       borderColor={useColorModeValue("gray.200", "gray.700")}
-      bgGradient={"radial(orange.900, transparent)"}
+      bgGradient={themedGradient}
+      shadow={"none"}
     >
       <CardHeader>
         <Heading as="h3" size="md">
