@@ -5,7 +5,7 @@ export default function Logout(props: ButtonProps) {
   const { logout, isLoading } = useKindeAuth();
 
   return (
-    <Button {...props} onClick={() => logout()} isLoading={isLoading}>
+    <Button {...props} onClick={() => logout()} isLoading={isLoading} variant={"ghost"}>
       Logout
     </Button>
   );
