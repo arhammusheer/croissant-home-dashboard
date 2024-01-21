@@ -1,15 +1,31 @@
+import { mode } from "@chakra-ui/theme-tools";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { ChakraProvider } from "@chakra-ui/react";
+
+import {
+  ChakraProvider,
+  StyleFunctionProps,
+  extendTheme,
+} from "@chakra-ui/react";
 import { Provider as ReduxProvider } from "react-redux";
-import store from "./redux/store.ts";
 import "./index.css";
+import store from "./redux/store.ts";
+
+const theme = extendTheme({
+  styles: {
+    global: (props: StyleFunctionProps) => ({
+      body: {
+        bg: mode("gray.100", "black")(props),
+      },
+    }),
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
     </ReduxProvider>
