@@ -23,9 +23,11 @@ const theme = extendTheme({
   },
 });
 
+const domain = import.meta.env.PROD ? "https://auth.croissant.one" : "https://croissant.kinde.com";
+
 const kindeConfig = {
   clientId: "953d71e1729d4fe1802ee6547c5e9963",
-  domain: "https://croissant.kinde.com",
+  domain: domain,
   redirectUri: window.location.origin,
   logoutUri: window.location.origin,
   isDangerouslyUseLocalStorage: !import.meta.env.PROD,
