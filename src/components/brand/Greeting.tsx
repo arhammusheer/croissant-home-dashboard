@@ -1,4 +1,5 @@
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
 const TimeOfDay = () => {
   const date = new Date();
@@ -21,11 +22,12 @@ const TimeOfDay = () => {
 
 export default function Greeting() {
   const color = useColorModeValue("gray.400", "gray.700");
+  const { user } = useKindeAuth();
 
   return (
     <Box>
       <Heading as="h2" color={color} fontWeight="bold">
-        Good {TimeOfDay()}
+        Good {TimeOfDay()}, {user?.given_name}
       </Heading>
     </Box>
   );

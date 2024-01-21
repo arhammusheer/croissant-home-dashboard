@@ -28,7 +28,7 @@ export default function Landing() {
           >
             Register
           </Button>
-          <Button onClick={() => login()} w={"full"} colorScheme="orange">
+          <Button onClick={() => login({})} w={"full"} colorScheme="orange">
             Login
           </Button>
         </Stack>

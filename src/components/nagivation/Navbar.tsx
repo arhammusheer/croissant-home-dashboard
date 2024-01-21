@@ -12,6 +12,7 @@ import Logo from "../brand/Logo";
 import Greeting from "../brand/Greeting";
 import Homepage from "../../pages/Homepage";
 import { useNavigate } from "react-router-dom";
+import Logout from "../authentication/Logout";
 
 export interface NavbarItem {
   name: string; // The name of the item
@@ -48,6 +49,7 @@ const DesktopNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
       {navitems.map((item) => (
         <NavItem key={item.name} {...item} />
       ))}
+      <Logout />
     </Stack>
   );
 };
