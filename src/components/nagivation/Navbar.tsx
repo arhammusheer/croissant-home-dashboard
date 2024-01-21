@@ -68,9 +68,15 @@ const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
     open: {
       opacity: 1,
       y: 0,
+      height: "100dvh",
       transition: { staggerChildren: 0.1 },
     },
-    closed: { opacity: 0, y: -50, transition: { staggerChildren: 0.1 } },
+    closed: {
+      opacity: 0,
+      y: -100,
+      height: 0,
+      transition: { staggerChildren: 0.1, when: "afterChildren" },
+    },
   };
 
   const itemVariants: Variants = {
@@ -87,7 +93,6 @@ const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
         align={"center"}
         justify={"space-between"}
         p={8}
-        as={"ul"}
       >
         <Logo />
         <MenuToggle
@@ -104,7 +109,7 @@ const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
             spacing={4}
             align={"center"}
             p={8}
-            as={motion.ul}
+            as={motion.div}
             listStyleType={"none"}
             variants={variants}
             initial="closed"
@@ -112,17 +117,17 @@ const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
             exit="closed"
           >
             {navitems.map((item) => (
-              <motion.li
+              <motion.div
                 key={item.name}
                 variants={itemVariants}
                 style={{ width: "100%" }}
               >
                 <NavItem key={item.name} {...item} />
-              </motion.li>
+              </motion.div>
             ))}
-            <motion.li variants={itemVariants} style={{ width: "100%" }}>
+            <motion.div variants={itemVariants} style={{ width: "100%" }}>
               <Logout />
-            </motion.li>
+            </motion.div>
           </Stack>
         )}
       </AnimatePresence>
