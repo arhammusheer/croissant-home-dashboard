@@ -11,6 +11,7 @@ import {
 import { Provider as ReduxProvider } from "react-redux";
 import "./index.css";
 import store from "./redux/store.ts";
+import { KindeProvider } from "@kinde-oss/kinde-auth-react";
 
 const theme = extendTheme({
   styles: {
@@ -22,12 +23,26 @@ const theme = extendTheme({
   },
 });
 
+const kindeConfig = {
+  clientId: "953d71e1729d4fe1802ee6547c5e9963",
+  domain: "https://croissant.kinde.com",
+  redirectUri: window.location.origin,
+  logoutUri: window.location.origin,
+};
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ReduxProvider store={store}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </ReduxProvider>
+    <KindeProvider
+      clientId={kindeConfig.clientId}
+      domain={kindeConfig.domain}
+      redirectUri={kindeConfig.redirectUri}
+      logoutUri={kindeConfig.logoutUri}
+    >
+      <ReduxProvider store={store}>
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </ReduxProvider>
+    </KindeProvider>
   </React.StrictMode>
 );
