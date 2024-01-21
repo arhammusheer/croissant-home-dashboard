@@ -5,9 +5,9 @@ import {
   Tooltip,
   useBreakpointValue,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, Variants, motion } from "framer-motion";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Homepage from "../../pages/Homepage";
@@ -63,33 +63,69 @@ const DesktopNav = ({
   );
 };
 
-
 const MobileNav = ({ navitems }: { navitems: Array<NavbarItem> }) => {
+  const variants: Variants = {
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.1 },
+    },
+    closed: { opacity: 0, y: -50, transition: { staggerChildren: 0.1 } },
+  };
+
+  const itemVariants: Variants = {
+    open: { opacity: 1, y: 0 },
+    closed: { opacity: 0, y: -20 },
+  };
+
   const { isOpen, onToggle } = useDisclosure();
   return (
-    <Stack
-      direction={"row"}
-      spacing={4}
-      align={"center"}
-      justify={"space-between"}
-      p={8}
-      as={"ul"}
-    >
-      <Logo />
-     <MenuToggle toggle={onToggle} isOpen={isOpen} theme={useColorModeValue("dark", "light")} />
-      <Box
-        display={{ base: "none", md: "flex" }}
-        alignItems={"center"}
+    <Stack direction={"column"}>
+      <Stack
+        direction={"row"}
+        spacing={4}
+        align={"center"}
+        justify={"space-between"}
+        p={8}
         as={"ul"}
       >
-        {navitems.map((item) => (
-          <NavItem key={item.name} {...item} />
-        ))}
-        <Logout />
-      </Box>
-      <Box display={{ base: "none", md: "flex" }}>
-        <Greeting />
-      </Box>
+        <Logo />
+        <MenuToggle
+          toggle={onToggle}
+          isOpen={isOpen}
+          theme={useColorModeValue("dark", "light")}
+        />
+      </Stack>
+
+      <AnimatePresence>
+        {isOpen && (
+          <Stack
+            direction={"column"}
+            spacing={4}
+            align={"center"}
+            p={8}
+            as={motion.ul}
+            listStyleType={"none"}
+            variants={variants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            {navitems.map((item) => (
+              <motion.li
+                key={item.name}
+                variants={itemVariants}
+                style={{ width: "100%" }}
+              >
+                <NavItem key={item.name} {...item} />
+              </motion.li>
+            ))}
+            <motion.li variants={itemVariants} style={{ width: "100%" }}>
+              <Logout />
+            </motion.li>
+          </Stack>
+        )}
+      </AnimatePresence>
     </Stack>
   );
 };
