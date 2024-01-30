@@ -9,19 +9,37 @@ import {
   Heading,
   Icon,
   Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Spacer,
   Stack,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { ElementType, useEffect, useState } from "react";
 import { BiServer } from "react-icons/bi";
-import { FaLaptop } from "react-icons/fa";
+import {
+  FaCcAmex,
+  FaCcDinersClub,
+  FaCcDiscover,
+  FaCcJcb,
+  FaCreditCard,
+  FaLaptop,
+} from "react-icons/fa";
 import { LuCircuitBoard } from "react-icons/lu";
+import { RiMastercardFill, RiVisaLine } from "react-icons/ri";
 import { SlScreenDesktop, SlScreenSmartphone } from "react-icons/sl";
 import Headbar from "../components/nagivation/Headbar";
 import { Capitalize, relativeTime } from "../utils";
-import { useState } from "react";
-import { motion } from "framer-motion";
 
 interface Device {
   name: string;
@@ -29,6 +47,14 @@ interface Device {
   type: "iot" | "mobile" | "desktop" | "laptop" | "server";
   status: "online" | "offline" | "unknown" | "maintenance" | "retired";
   lastSeen: string;
+}
+enum AllowedCardTypes {
+  MASTERCARD = "MASTERCARD",
+  VISA = "VISA",
+  AMERICAN_EXPRESS = "AMERICAN_EXPRESS",
+  DISCOVER = "DISCOVER",
+  DINERS_CLUB = "DINERS_CLUB",
+  JCB = "JCB",
 }
 
 const exampleDevices: Array<Device> = [
@@ -293,6 +319,8 @@ const OrderYourOwnCard = () => {
     "linear(to-t,transparent,#422200)"
   );
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Card
       bg={useColorModeValue("white", "black")}
@@ -302,6 +330,7 @@ const OrderYourOwnCard = () => {
       bgGradient={themedGradient}
       shadow={"none"}
     >
+      <OrderYourOwnModal isOpen={isOpen} onClose={onClose} />
       <CardHeader>
         <Heading as="h3" size="md">
           Order Your CIOT Device
@@ -313,10 +342,183 @@ const OrderYourOwnCard = () => {
           You can order your own device from our store. We will automatically
           register it for you.
         </Text>
-        <Button w={"full"} colorScheme="orange" mt={4}>
+        <Button w={"full"} colorScheme="orange" mt={4} onClick={onOpen}>
           Order Now
         </Button>
       </CardBody>
     </Card>
   );
+};
+
+const OrderYourOwnModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+      <ModalOverlay />
+      <ModalContent bg={"black"} borderWidth={1} borderColor={"gray.700"}>
+        <ModalHeader>
+          <Heading as="h3" size="md">
+            Order Your CIOT Device
+          </Heading>
+        </ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody>
+          <Stack direction={"column"} spacing={2}>
+            <WeAcceptCards />
+            <PrettyCardNumberInput />
+          </Stack>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const WeAcceptCards = () => {
+  const Icons: Record<AllowedCardTypes, ElementType> = {
+    MASTERCARD: RiMastercardFill,
+    VISA: RiVisaLine,
+    AMERICAN_EXPRESS: FaCcAmex,
+    DISCOVER: FaCcDiscover,
+    DINERS_CLUB: FaCcDinersClub,
+    JCB: FaCcJcb,
+  };
+
+  return (
+    <Stack direction={"column"} spacing={2}>
+      <Text fontSize={"sm"}>We accept</Text>
+      <Stack direction={"row"} spacing={2} align={"center"}>
+        {Object.keys(Icons).map((key) => {
+          return <Icon key={key} as={Icons[key as AllowedCardTypes]} h={8} w={8} />;
+        })}
+      </Stack>
+    </Stack>
+  );
+};
+
+const PrettyCardNumberInput = () => {
+  const [cardNumber, setCardNumber] = useState<string>("");
+  const [cardType, setCardType] = useState<string | null>(null);
+  const [cardLength, setCardLength] = useState<19 | 17>(19);
+
+  const detectCardType = (cardNumber: string) => {
+    const cardTypes = Object.keys(regexPattern);
+    for (const cardType of cardTypes) {
+      if (
+        cardNumber
+          .split(" ")
+          .join("")
+          .match(regexPattern[cardType as AllowedCardTypes])
+      ) {
+        setCardType(cardType);
+        break;
+      } else {
+        setCardType(null);
+      }
+    }
+  };
+  const detectCardLength = (cardType: string) => {
+    if (cardType === "AMERICAN_EXPRESS") {
+      setCardLength(17);
+    } else {
+      setCardLength(19);
+    }
+  };
+
+  useEffect(() => {
+    detectCardType(cardNumber);
+  }, [cardNumber]);
+
+  useEffect(() => {
+    detectCardLength(cardType || "");
+  }, [cardType]);
+
+  useEffect(() => {
+    setCardNumber(autoCardFormat(cardNumber, cardType || ""));
+  }, [cardNumber, cardType]);
+
+  const cardTypeIcon = (type: string) => {
+    const Amex = FaCcAmex;
+    const MC = RiMastercardFill;
+    const Visa = RiVisaLine;
+    const DinersClub = FaCcDinersClub;
+    const Discover = FaCcDiscover;
+    const JCB = FaCcJcb;
+    const Default = FaCreditCard;
+
+    if (type === "MASTERCARD") {
+      return MC;
+    } else if (type === "VISA") {
+      return Visa;
+    } else if (type === "AMERICAN_EXPRESS") {
+      return Amex;
+    } else if (type === "DINERS_CLUB") {
+      return DinersClub;
+    } else if (type === "DISCOVER") {
+      return Discover;
+    } else if (type === "JCB") {
+      return JCB;
+    } else {
+      return Default;
+    }
+  };
+
+  const autoCardFormat = (cardNumber: string, cardType: string) => {
+    if (cardType === "AMERICAN_EXPRESS") {
+      // Example xxxx xxxxxx xxxxx
+      const plain = cardNumber.replace(/\W/gi, "");
+      const slice1 = cardNumber.length > 4 ? plain.slice(0, 4) : plain;
+      const slice2 =
+        cardNumber.length > 10 ? plain.slice(4, 10) : plain.slice(4);
+      const slice3 =
+        cardNumber.length > 15 ? plain.slice(10, 15) : plain.slice(10);
+
+      const formatted = `${slice1} ${slice2} ${slice3}`.trim();
+
+      return formatted;
+    } else {
+      // Example xxxx xxxx xxxx xxxx
+      const plain = cardNumber.replace(/\W/gi, "");
+      const slice1 = cardNumber.length > 4 ? plain.slice(0, 4) : plain;
+      const slice2 = cardNumber.length > 8 ? plain.slice(4, 8) : plain.slice(4);
+      const slice3 =
+        cardNumber.length > 12 ? plain.slice(8, 12) : plain.slice(8);
+      const slice4 =
+        cardNumber.length > 16 ? plain.slice(12, 16) : plain.slice(12);
+
+      const formatted = `${slice1} ${slice2} ${slice3} ${slice4}`.trim();
+
+      return formatted;
+    }
+  };
+
+  return (
+    <InputGroup>
+      <Input
+        placeholder={"Card Number"}
+        value={cardNumber}
+        onChange={(e) => setCardNumber(e.target.value)}
+        maxLength={cardLength}
+        // Allow only numbers
+        pattern="[0-9]*"
+      />
+      <InputRightElement p={0}>
+        <Icon as={cardTypeIcon(cardType || "")} h={"full"} m={0} />
+      </InputRightElement>
+    </InputGroup>
+  );
+};
+
+const regexPattern = {
+  MASTERCARD: /^5[1-5][0-9]{1,}|^2[2-7][0-9]{1,}$/,
+  VISA: /^4[0-9]{2,}$/,
+  AMERICAN_EXPRESS: /^3[47][0-9]{5,}$/,
+  DISCOVER: /^6(?:011|5[0-9]{2})[0-9]{3,}$/,
+  DINERS_CLUB: /^3(?:0[0-5]|[68][0-9])[0-9]{4,}$/,
+  JCB: /^(?:2131|1800|35[0-9]{3})[0-9]{3,}$/,
 };

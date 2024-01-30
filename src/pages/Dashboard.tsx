@@ -4,6 +4,7 @@ import Navbar, { NavbarItem } from "../components/nagivation/Navbar";
 import Homepage from "./Homepage";
 import MyAccount from "./MyAccount";
 import MyDevices from "./MyDevices";
+import DataSources from "./DataSources/Index";
 
 const navitems: Array<NavbarItem> = [
   {
@@ -15,6 +16,11 @@ const navitems: Array<NavbarItem> = [
     name: "My Devices",
     path: "/devices",
     element: <MyDevices />,
+  },
+  {
+    name: "My Sources",
+    path: "/data-sources",
+    element: <DataSources />,
   },
   {
     name: "My Account",
